@@ -18,13 +18,17 @@ app.use((req, res, next) => {
     next()
   })
 
-app.post('/api/sauce', (req, res, next) => {
+app.post('/api/sauces', (req, res, next) => {
   const sauce = new Sauce({
     ...req.body
   })
   sauce.save()
   .then(res.status(201).json({ message : "registered object !" }))
   .catch(error => res.status(400).json({ error }))
+})
+
+app.post('/api/sauces/:id/like', (req, res, next) => {
+
 })
 
 app.put('/api/sauces/:id', (req, res, next) => {
