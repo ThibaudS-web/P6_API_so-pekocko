@@ -9,13 +9,12 @@ exports.createSauce = (req, res, next) => {
     manufacturer: req.body.manufacturer,
     description: req.body.description,
     mainPepper: req.body.mainPepper,
-    imageUrl: req.body.imageUrl,
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
     heat: req.body.heat,
     // likes: req.body.likes,
     // dislikes: req.body.dislikes,
     // userLikes: req.body.userLikes,
     // usersDisliked: req.body.usersDisliked,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   })
   sauce.save()
     .then(() => res.status(201).json({ message : "registered object !" }))
