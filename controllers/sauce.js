@@ -1,6 +1,7 @@
 const Sauce = require('../models/Sauce')
 
-exports.createSauce = (req, res, next) => {  
+exports.createSauce = (req, res, next) => {
+  const sauceObject = JSON.parse(req.body.sauce)
   const sauce = new Sauce({
     userId: req.body.userId,
     name: req.body.name,
@@ -13,6 +14,7 @@ exports.createSauce = (req, res, next) => {
     dislikes: req.body.dislikes,
     userLikes: req.body.userLikes,
     usersDisliked: req.body.usersDisliked,
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   })
   sauce.save()
     .then(() => res.status(201).json({ message : "registered object !" }))
