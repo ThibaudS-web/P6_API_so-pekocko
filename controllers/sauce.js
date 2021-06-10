@@ -3,7 +3,6 @@ const fs = require('fs')
 
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce)
-  delete sauceObject._id
   const sauce = new Sauce({
     userId: req.body.userId,
     name: req.body.name,
@@ -12,10 +11,10 @@ exports.createSauce = (req, res, next) => {
     mainPepper: req.body.mainPepper,
     imageUrl: req.body.imageUrl,
     heat: req.body.heat,
-    likes: req.body.likes,
-    dislikes: req.body.dislikes,
-    userLikes: req.body.userLikes,
-    usersDisliked: req.body.usersDisliked,
+    // likes: req.body.likes,
+    // dislikes: req.body.dislikes,
+    // userLikes: req.body.userLikes,
+    // usersDisliked: req.body.usersDisliked,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   })
   sauce.save()
