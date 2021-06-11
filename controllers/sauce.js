@@ -4,16 +4,16 @@ const fs = require('fs')
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce)
   const sauce = new Sauce({
-    userId: req.body.userId,
-    name: req.body.name,
-    manufacturer: req.body.manufacturer,
-    description: req.body.description,
-    mainPepper: req.body.mainPepper,
-    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-    heat: req.body.heat,
+    userId: sauceObject.userId,
+    name: sauceObject.name,
+    manufacturer: sauceObject.manufacturer,
+    description: sauceObject.description,
+    mainPepper: sauceObject.mainPepper,
+    heat: sauceObject.heat,
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     // likes: req.body.likes,
     // dislikes: req.body.dislikes,
-    // userLikes: req.body.userLikes,
+    // usersLikes: req.body.userLikes,
     // usersDisliked: req.body.usersDisliked,
   })
   sauce.save()
