@@ -2,6 +2,7 @@ const Sauce = require('../models/Sauce')
 const fs = require('fs')
 
 exports.createSauce = (req, res, next) => {
+  console.log("Le POST fonctionne")
   const sauceObject = JSON.parse(req.body.sauce)
   const sauce = new Sauce({
     userId: sauceObject.userId,
