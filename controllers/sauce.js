@@ -12,14 +12,55 @@ exports.createSauce = (req, res, next) => {
     mainPepper: sauceObject.mainPepper,
     heat: sauceObject.heat,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    // likes: req.body.likes,
-    // dislikes: req.body.dislikes,
-    // usersLikes: req.body.userLikes,
-    // usersDisliked: req.body.usersDisliked,
+    // likes: req.body.sauce.likes,
+    // dislikes: req.body.sauce.dislikes,
+    // usersLikes: req.body.sauce.userLikes,
+    // usersDisliked: req.body.sauce.usersDisliked,
   })
   sauce.save()
     .then(() => res.status(201).json({ message : "registered object !" }))
     .catch(error => res.status(400).json({ error }))
+}
+
+exports.rateSauce = (req, res, next) => {
+  
+  Sauce.findOne({ _id: req.params.id })
+    .then(sauce => {
+      console.log(req.body.like)
+      switch (req.body.like) {
+        case -1:
+          console.log("-1")
+          sauce.dislikes = sauce.dislikes + 1
+          console.log(sauce.dislikes)
+          sauce.usersDisliked.push(req.body.userId)
+          console.log(sauce)
+          res.status(200).json({ message : "You dislike this sauce !"})
+          break
+        case 0:
+          console.log("0")
+          if (sauce.usersDisliked.find(user => user === req.body.userId)) {
+            sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId)
+            sauce.dislikes = sauce.dislikes - 1
+            res.status(200).json({ message : "Dislike deleted !"})
+          } else {
+            sauce.usersLiked = sauce.usersDisliked.filter(user => user !== req.body.userId)
+            sauce.likes = sauce.likes -1
+            res.status(200).json({ message : "Like deleted !"})
+          }        
+          break
+        case 1:
+          console.log("1")
+          sauce.likes = sauce.likes + 1
+          sauce.usersLiked.push(sauce.userId)
+          console.log(sauce)
+          res.status(200).json({ message : "You like this sauce !"})
+          break
+        default:
+          res.status(500).json({ error })
+      }
+      
+    })
+    .catch(error => res.status(500).json({ error }))
 }
 
 exports.modifySauce = (req, res, next) => {
