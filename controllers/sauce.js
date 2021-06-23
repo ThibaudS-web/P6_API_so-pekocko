@@ -1,8 +1,8 @@
 const Sauce = require('../models/Sauce')
 const fs = require('fs')
 
+
 exports.createSauce = (req, res, next) => {
-  console.log("Le POST fonctionne")
   const sauceObject = JSON.parse(req.body.sauce)
   const sauce = new Sauce({
     userId: sauceObject.userId,
@@ -17,13 +17,21 @@ exports.createSauce = (req, res, next) => {
     // usersLikes: req.body.sauce.userLikes,
     // usersDisliked: req.body.sauce.usersDisliked,
   })
-  sauce.save()
+
+  let validForm = new RegExp('^[A-Z][A-Za-z\é\è\ê\ç\\s\-]+$', 'g')
+  let testValidForm  = validForm.test(sauceObject.name, sauceObject.manufacturer, sauceObject.description, sauceObject.mainPepper)
+
+  if(testValidForm) {
+    sauce.save()
     .then(() => res.status(201).json({ message : "registered object !" }))
     .catch(error => res.status(400).json({ error }))
+  } else {
+    return res.status(401).json({ message : "Form is invalid !" })
+  }
+
 }
 
 exports.rateSauce = (req, res, next) => {
-  
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
       console.log(req.body.like)
@@ -58,7 +66,6 @@ exports.rateSauce = (req, res, next) => {
         default:
           res.status(500).json({ error })
       }
-      
     })
     .catch(error => res.status(500).json({ error }))
 }
@@ -69,9 +76,17 @@ exports.modifySauce = (req, res, next) => {
     ...JSON.parse(req.body.sauce),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   } : { ...req.body }
-  Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
+
+  let validForm = new RegExp('^[A-Z][A-Za-z\é\è\ê\ç\\s\-]+$', 'g')
+  let testValidForm  = validForm.test(sauceObject.name, sauceObject.manufacturer, sauceObject.description, sauceObject.mainPepper)
+
+  if(testValidForm){
+    Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
     .then(() => res.status(200).json({ message: 'Object modified !'}))
     .catch(error => res.status(400).json({ error }));
+  } else {
+    return res.status(401).json({ message : "Form is invalid !"})
+  }
 }
 
 exports.deleteSauce = (req, res, next) => {
