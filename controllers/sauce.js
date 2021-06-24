@@ -18,7 +18,7 @@ exports.createSauce = (req, res, next) => {
     // usersDisliked: req.body.sauce.usersDisliked,
   })
 
-  let validForm = new RegExp('^[A-Z][A-Za-z\é\è\ê\ç\\s\-]+$', 'g')
+  let validForm = new RegExp('^[A-Za-z\é\ë\è\ê\â\ä\à\ù\ü\û\ï\î\ö\ô\ç\\s\-]+$', 'g')
   let testValidForm  = validForm.test(sauceObject.name, sauceObject.manufacturer, sauceObject.description, sauceObject.mainPepper)
 
   if(testValidForm) {
@@ -84,7 +84,7 @@ exports.modifySauce = (req, res, next) => {
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
   } : { ...req.body }
 
-  let validForm = new RegExp('^[A-Z][A-Za-z\é\è\ê\ç\\s\-]+$', 'g')
+  let validForm = new RegExp('^[A-Za-z\é\ë\è\ê\â\ä\à\ù\ü\û\ï\î\ö\ô\ç\\s\-]+$', 'g')
   let testValidForm  = validForm.test(sauceObject.name, sauceObject.manufacturer, sauceObject.description, sauceObject.mainPepper)
 
   if(testValidForm){
