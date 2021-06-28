@@ -1,8 +1,11 @@
+//import bcrypt for hashing password in database 
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+//Import user model
 const User = require('../models/User')
 
+//Controller for the POST sign up 
 exports.signup = (req, res, next) => {
     if(req.body.password == undefined || req.body.email == undefined) {
         res.status(400).json({ message: 'required fields : password, email' })
@@ -21,6 +24,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }))
 }
 
+//Controller for the POST login
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email} )
         .then(user => {

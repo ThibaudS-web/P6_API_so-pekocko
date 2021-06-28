@@ -1,7 +1,8 @@
+//Import sauce model and file-system
 const Sauce = require('../models/Sauce')
 const fs = require('fs')
 
-
+//Controller POST create sauce with validation
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce)
   const sauce = new Sauce({
@@ -30,6 +31,7 @@ exports.createSauce = (req, res, next) => {
   }
 }
 
+//Controller POST Like 
 exports.rateSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
@@ -77,11 +79,13 @@ exports.rateSauce = (req, res, next) => {
     .catch(error => res.status(500).json({ error }))
 }
 
+//Controller PUT modify sauce with validation
 exports.modifySauce = (req, res, next) => {
-  const sauceObject = req.file ? 
+  const sauceObject = req.file ?
   { 
     ...JSON.parse(req.body.sauce),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+
   } : { ...req.body }
 
   let validForm = new RegExp('^[A-Za-z\é\ë\è\ê\â\ä\à\ù\ü\û\ï\î\ö\ô\ç\\s\-]+$', 'g')
@@ -96,6 +100,7 @@ exports.modifySauce = (req, res, next) => {
   }
 }
 
+//Controller DELETE sauce - using file-system for delete the sauce picture from images folder
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id})
     .then(sauce => {
@@ -109,12 +114,14 @@ exports.deleteSauce = (req, res, next) => {
     .catch( error => res.status(500).json({ error }))
 }
 
+//Controller GET all sauce
 exports.getAllSauce = (req, res, next) => {
   Sauce.find()
   .then(sauces => res.status(200).json(sauces))
   .catch(error => res.status(400).json({ error }));
 }
 
+//Controller GET one sauce by id
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({_id: req.params.id})
     .then(sauce => res.status(200).json(sauce))
