@@ -38,7 +38,6 @@ exports.rateSauce = (req, res, next) => {
       console.log(req.body.like)
       switch (req.body.like) {
         case -1:
-          console.log("-1")
           sauce.dislikes = sauce.dislikes + 1
           console.log(sauce.dislikes)
           sauce.usersDisliked.push(req.body.userId)
@@ -48,7 +47,6 @@ exports.rateSauce = (req, res, next) => {
           .catch(error => res.status(400).json({ error }))
           break
         case 0:
-          console.log("0")
           if (sauce.usersDisliked.find(user => user === req.body.userId)) {
             sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId)
             sauce.dislikes = sauce.dislikes - 1
@@ -64,7 +62,6 @@ exports.rateSauce = (req, res, next) => {
           }        
           break
         case 1:
-          console.log("1")
           sauce.likes = sauce.likes + 1
           sauce.usersLiked.push(sauce.userId)
           console.log(sauce)

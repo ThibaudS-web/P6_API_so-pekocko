@@ -2,13 +2,15 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const path = require('path')
+const dotenv = require('dotenv').config()
 
 //Imports of sauce and user routes 
 const sauceRoutes = require('./routes/sauce')
 const userRoutes = require('./routes/user')
 
 //Connection to mangoDB
-mongoose.connect('mongodb+srv://ThibS:14y3X3DDA3FPSrFA@cluster0.ffla6.mongodb.net/OPC-project_6?retryWrites=true&w=majority',
+console.log(process.env.CONNECTMANGODB)
+mongoose.connect(`${process.env.CONNECTMANGODB}`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
