@@ -36,15 +36,20 @@ exports.login = (req, res, next) => {
                     if(!valid) {
                         return res.status(401).json({ message:'Wrong password !'})
                     }
-                    res.status(200).json({
+                    const tokenUser = {
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
-                            'akdiektp458dkjqspsd2klsqdmolsd_df54fdsfl_dsflml',
-                            { expiresIn: '24h'}
+                            `${process.env.TOKENPASS}`,
+                            { expiresIn: '24h'}                            
                         )
-                    })
-                })
+                    }                
+                    res.status(200).json(tokenUser)               
+                })              
         })
         .catch(error => res.status(500).json({ error }))
 }
+
+
+
+
