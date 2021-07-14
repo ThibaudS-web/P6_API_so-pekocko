@@ -113,8 +113,6 @@ exports.deleteSauce = (req, res, next) => {
 
 //Controller GET all sauce
 exports.getAllSauce = (req, res, next) => {
-  // const token = req.headers.authorization.split(' ')[1]
-  // localStorage.setItem('token', token)
   Sauce.find()
   .then(sauces => res.status(200).json(sauces) )
   .catch(error => res.status(400).json({ error }));

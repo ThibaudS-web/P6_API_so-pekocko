@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken')
 
-
 //Middleware to require user authentication
 module.exports = (req, res, next) => {
     try {
@@ -10,11 +9,6 @@ module.exports = (req, res, next) => {
         if(req.body.userId && req.body.userId !== userId){
             throw 'User ID not valid !'
         } else {
-            if (typeof localStorage === "undefined" || localStorage === null) {
-                var LocalStorage = require('node-localstorage').LocalStorage;
-                localStorage = new LocalStorage('./scratch');
-              }
-              localStorage.setItem('tokenUser', token)
             next()
         }
     } catch ( error ) {
