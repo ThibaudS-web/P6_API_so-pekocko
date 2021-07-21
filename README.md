@@ -2,8 +2,7 @@
 
 ## Add your mongoDB connection and TOKEN
 
-Create a file .env in the root project
-In this file, you need to add a variable for your connection at MongoDB
+Create a file .env in the root project. In this file, you need to add a variable for your connection at MongoDB
 ```
 ADMINFULL=mongodb+srv://<user>:<password>@cluster0.ffla6.mongodb.net/OPC-project_6?retryWrites=true&w=majority
 ```
