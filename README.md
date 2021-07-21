@@ -25,7 +25,7 @@ Start the server
 $ nodemon server
 ``` 
 
-API should be available at http://localhost:3000/api
+API should be available at http://localhost:3000/
 
 ## Start the web server
 
