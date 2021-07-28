@@ -39,9 +39,7 @@ exports.rateSauce = (req, res, next) => {
       switch (req.body.like) {
         case -1:
           sauce.dislikes = sauce.dislikes + 1
-          console.log(sauce.dislikes)
           sauce.usersDisliked.push(req.body.userId)
-          console.log(sauce)
           sauce.save()
           .then(() => res.status(200).json({ message : "You dislike this sauce !"}))
           .catch(error => res.status(400).json({ error }))
@@ -55,6 +53,7 @@ exports.rateSauce = (req, res, next) => {
             .catch(error => res.status(400).json({ error }))
           } else {
             sauce.usersLiked = sauce.usersDisliked.filter(user => user !== req.body.userId)
+            console.log(sauce.usersDisliked)
             sauce.likes = sauce.likes -1
             sauce.save()
             .then(() => res.status(200).json({ message : "Like deleted !"}))
@@ -64,7 +63,6 @@ exports.rateSauce = (req, res, next) => {
         case 1:
           sauce.likes = sauce.likes + 1
           sauce.usersLiked.push(sauce.userId)
-          console.log(sauce)
           sauce.save()
           .then(() => res.status(200).json({ message : "You like this sauce !"}))
           .catch(error => res.status(400).json({ error }))
