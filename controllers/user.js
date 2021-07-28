@@ -43,7 +43,7 @@ exports.login = (req, res, next) => {
                             `${process.env.TOKENPASS}`,
                             { expiresIn: '24h'}                            
                         )
-                    }                
+                    }              
                     res.status(200).json(tokenUser)               
                 })              
         })

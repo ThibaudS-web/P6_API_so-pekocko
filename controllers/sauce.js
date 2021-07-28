@@ -35,8 +35,8 @@ exports.createSauce = (req, res, next) => {
 exports.rateSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
-      console.log(req.body.like)
       switch (req.body.like) {
+        //Use case "Add a dislike"
         case -1:
           sauce.dislikes = sauce.dislikes + 1
           sauce.usersDisliked.push(req.body.userId)
@@ -46,14 +46,15 @@ exports.rateSauce = (req, res, next) => {
           break
         case 0:
           if (sauce.usersDisliked.find(user => user === req.body.userId)) {
-            sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId)
+            //Removed a dislike
+            sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId) // Create a new array for usersDisliked without our userId
             sauce.dislikes = sauce.dislikes - 1
             sauce.save()
             .then(() => res.status(200).json({ message : "Dislike deleted !"}))
             .catch(error => res.status(400).json({ error }))
           } else {
-            sauce.usersLiked = sauce.usersDisliked.filter(user => user !== req.body.userId)
-            console.log(sauce.usersDisliked)
+            //Removed a like
+            sauce.usersLiked = sauce.usersDisliked.filter(user => user !== req.body.userId) // Create a new array for usersLiked without our userId
             sauce.likes = sauce.likes -1
             sauce.save()
             .then(() => res.status(200).json({ message : "Like deleted !"}))
@@ -61,6 +62,7 @@ exports.rateSauce = (req, res, next) => {
           }        
           break
         case 1:
+          //Use case "Add a like"
           sauce.likes = sauce.likes + 1
           sauce.usersLiked.push(sauce.userId)
           sauce.save()
