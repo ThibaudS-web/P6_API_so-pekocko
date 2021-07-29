@@ -36,6 +36,7 @@ app.use((req, res, next) =>   {
 //Use body-parser for parsing bodies request
 app.use(bodyParser.json())
 
+// images management, send image at 'images' folder
 app.use('/images', express.static(path.join(__dirname, 'images')))
 
 app.use('/api/sauces', sauceRoutes)
