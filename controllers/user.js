@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 
 //Crypt mail
-function crypt(sentence) {
+function cryptmail(sentence) {
     var n = 0;
     var r = "";
     for( var i = 0; i < sentence.length; i++)
@@ -30,7 +30,7 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
         const user = new User({
-            email: crypt(req.body.email),
+            email: cryptmail(req.body.email),
             password: hash
         })
         user.save()
@@ -42,7 +42,7 @@ exports.signup = (req, res, next) => {
 
 //Controller for the POST login
 exports.login = (req, res, next) => {
-    User.findOne({ email: crypt(req.body.email)} )
+    User.findOne({ email: cryptmail(req.body.email)} )
         .then(user => {
             if(!user) {
                 return res.status(401).json({ message:'User not found !'})
