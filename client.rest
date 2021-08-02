@@ -1,0 +1,38 @@
+POST http://localhost:3000/api/auth/signup 
+Content-Type: application/json
+
+{
+    "email": "thibaud.oui@gmail.com",
+    "password": "thibs17"
+}
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "thibaud.oui@gmail.com",
+    "password": "thibs17"
+}
+###
+
+GET http://localhost:3000/api/sauces
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTA4MGIzYTgzMGMxZDUzNDBjMDQxYjYiLCJpYXQiOjE2Mjc5MTcxODEsImV4cCI6MTYyODAwMzU4MX0.zCRWRiNwqoQ5WQghtWrqe4zB3BGkqK4c0MuDqlbt0-M
+###
+POST http://localhost:3000/api/sauces/6107c51ef639f22be4e40f33/like
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTA4MGIzYTgzMGMxZDUzNDBjMDQxYjYiLCJpYXQiOjE2Mjc5MTcxODEsImV4cCI6MTYyODAwMzU4MX0.zCRWRiNwqoQ5WQghtWrqe4zB3BGkqK4c0MuDqlbt0-M
+
+{
+    "like": 1,
+    "userId": "61080b3a830c1d5340c041b6"
+}
+###
+PUT http://localhost:3000/api/sauces/6107c51ef639f22be4e40f33
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MTA4MGIzYTgzMGMxZDUzNDBjMDQxYjYiLCJpYXQiOjE2Mjc5MTcxODEsImV4cCI6MTYyODAwMzU4MX0.zCRWRiNwqoQ5WQghtWrqe4zB3BGkqK4c0MuDqlbt0-M
+
+{
+    "like": 1,
+    "userId": "61080b3a830c1d5340c041b6", 
+    "name": "ketchup"
+}
