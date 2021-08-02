@@ -38,25 +38,28 @@ exports.rateSauce = (req, res, next) => {
       switch (req.body.like) {
         //Use case "Add a dislike"
         case -1:
-          sauce.dislikes = sauce.dislikes + 1
-          sauce.usersDisliked.push(req.body.userId)
-          sauce.save()
+          sauce.update({
+            $inc: {dislikes: 1},
+            $push: {usersDisliked: req.body.userId}
+          })
           .then(() => res.status(200).json({ message : "You dislike this sauce !"}))
           .catch(error => res.status(400).json({ error }))
           break
         case 0:
           if (sauce.usersDisliked.find(user => user === req.body.userId)) {
             //Removed a dislike
-            sauce.usersDisliked = sauce.usersDisliked.filter(user => user !== req.body.userId) // Create a new array for usersDisliked without our userId
-            sauce.dislikes = sauce.dislikes - 1
-            sauce.save()
+            sauce.update({
+              $inc: {dislikes: -1},
+              $pull: {usersDisliked: req.body.userId}
+            })
             .then(() => res.status(200).json({ message : "Dislike deleted !"}))
             .catch(error => res.status(400).json({ error }))
           } else {
             //Removed a like
-            sauce.usersLiked = sauce.usersDisliked.filter(user => user !== req.body.userId) // Create a new array for usersLiked without our userId
-            sauce.likes = sauce.likes -1
-            sauce.save()
+            sauce.update({
+              $inc: {likes: -1},
+              $pull: {usersLiked: req.body.userId}
+            })
             .then(() => res.status(200).json({ message : "Like deleted !"}))
             .catch(error => res.status(400).json({ error }))
           }        
@@ -65,7 +68,10 @@ exports.rateSauce = (req, res, next) => {
           //Use case "Add a like"
           sauce.likes = sauce.likes + 1
           sauce.usersLiked.push(sauce.userId)
-          sauce.save()
+          sauce.update({
+            $inc: {likes: 1},
+            $push: {usersLiked: req.body.userId}
+          })
           .then(() => res.status(200).json({ message : "You like this sauce !"}))
           .catch(error => res.status(400).json({ error }))
           break
