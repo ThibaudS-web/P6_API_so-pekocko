@@ -78,8 +78,9 @@ exports.rateSauce = (req, res, next) => {
 
 //Controller PUT modify sauce with validation
 exports.modifySauce = (req, res, next) => {
+
   const sauceObject = req.file ?
-  { 
+  {
     ...JSON.parse(req.body.sauce),
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
 
@@ -88,12 +89,28 @@ exports.modifySauce = (req, res, next) => {
   let validForm = new RegExp('^[A-Za-z\é\ë\è\ê\â\ä\à\ù\ü\û\ï\î\ö\ô\ç\\s\-]+$', 'g')
   let testValidForm  = validForm.test(sauceObject.name, sauceObject.manufacturer, sauceObject.description, sauceObject.mainPepper)
 
-  if(testValidForm){
-    Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
-    .then(() => res.status(200).json({ message: 'Object modified !'}))
-    .catch(error => res.status(400).json({ error }));
+  if(req.file) {
+    Sauce.findOne({ _id: req.params.id})
+    .then(sauce => {
+      const filename = sauce.imageUrl.split('/images/')[1]
+      fs.unlink(`images/${filename}`, () => {   
+        if(testValidForm){
+          Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
+          .then(() => res.status(200).json({ message: 'Object modified !'}))
+          .catch(error => res.status(400).json({ error }));
+        } else {
+          return res.status(401).json({ message : "Form is invalid !"})
+        }
+      })
+    })
   } else {
-    return res.status(401).json({ message : "Form is invalid !"})
+    if(testValidForm){
+      Sauce.updateOne({_id: req.params.id}, {...sauceObject, _id: req.params.id})
+      .then(() => res.status(200).json({ message: 'Object modified !'}))
+      .catch(error => res.status(400).json({ error }));
+    } else {
+      return res.status(401).json({ message : "Form is invalid !"})
+    }
   }
 }
 
@@ -101,7 +118,6 @@ exports.modifySauce = (req, res, next) => {
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id})
     .then(sauce => {
-      const filename = sauce.imageUrl.split('/images/')[1]
       fs.unlink(`images/${filename}`, () =>{
         Sauce.deleteOne({_id: req.params.id})
           .then(() => res.status(200).json({ message: 'Object deleted !'}))

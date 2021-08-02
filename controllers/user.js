@@ -33,7 +33,6 @@ exports.signup = (req, res, next) => {
             email: UnCryptMail(req.body.email),
             password: hash
         })
-        console.log(user)
         user.save()
         .then(() => res.status(201).json({ message: 'User created !'}))
         .catch(error => res.status(400).json({ error }))
